@@ -1,18 +1,65 @@
-### ultron's init.lua
-Prerequisite: install [ripgrep](https://github.com/BurntSushi/ripgrep).
+# nvim-config
 
-[The full video of me setting up this repo](https://www.youtube.com/watch?v=w7i4amO_zaE)
+Personal Neovim config built on [lazy.nvim](https://github.com/folke/lazy.nvim), with LSP (Mason), Treesitter, Telescope, and gruvbox as the default colorscheme.
 
-For anyone that is interested in my vimrc, i will have a commit log below
-documenting each one of my commits (easy to C-f the change you want to know
-about though i would just suggest `git log -S`).
+## Prerequisites
 
-### Change Log
-* [33eee9ad](https://github.com/ultron/init.lua/commit/33eee9ad0c035a92137d99dae06a2396be4c892e) initial commits
-* [cb210006](https://github.com/ultron/init.lua/commit/cb210006356b4b613b71c345cb2b02eefa961fc0) netrw, autogroups for yank highlighting, and auto remove whitespace
-* [c8c0bf4a](https://github.com/ultron/init.lua/commit/c8c0bf4aeacd0bd77136d9c5ee490680515a106b) zenmode.  i really like this plugin
-* [81c770d2](https://github.com/ultron/init.lua/commit/81c770d2d2e32e59916b39c7f5babbc8560f7a82) copilot testing
-* [4a96e645](https://github.com/ultron/init.lua/commit/4a96e6457b0a0241ca7361ce62177aa6b9a33a38) fugitive mappings for push and pull
-* [a3bad06a](https://github.com/ultron/init.lua/commit/a3bad06a4681c322538d609aa1c0bd18880f77c6) disabled eslint.  driving me crazy
+- Neovim >= 0.10
+- [git](https://git-scm.com/)
+- [ripgrep](https://github.com/BurntSushi/ripgrep) (needed for Telescope's live grep)
+- A [Nerd Font](https://www.nerdfonts.com/) set in your terminal (for icons)
+- `node` and `npm` (for JS/TS/HTML language servers)
+- `python3` and `pip` (for Python language servers)
 
+## Install
+
+```bash
+# back up any existing config first
+mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
+
+git clone git@github.com:UjjavalParmar/nvim-config.git ~/.config/nvim
+
+nvim
+```
+
+On first launch, `lazy.nvim` bootstraps itself and installs all plugins automatically. Once that finishes:
+
+1. Restart Neovim.
+2. Run `:Mason` and confirm the language servers install (they're set to auto-install via `ensure_installed`: `lua_ls`, `pyright`, `ruff`, `ts_ls`, `html`, `terraformls`).
+3. Run `:TSUpdate` if any Treesitter parsers didn't install automatically.
+
+## Structure
+
+```
+init.lua                    -- entry point
+lua/ultron/
+  init.lua                  -- autocmds, filetypes, global options
+  set.lua                   -- vim.opt settings
+  remap.lua                 -- keymaps
+  lazy_init.lua             -- bootstraps lazy.nvim
+  lazy/                     -- one file per plugin (or plugin group)
+    colors.lua               -- colorschemes (gruvbox is active)
+    lsp.lua                   -- mason, lspconfig, nvim-cmp
+    treesitter.lua            -- parsers + textobjects
+    telescope.lua             -- fuzzy finder + keymaps
+    ...
+```
+
+## Changing the colorscheme
+
+Edit the default in `lua/ultron/lazy/colors.lua`:
+
+```lua
+function ColorMyPencils(color)
+    color = color or "gruvbox"   -- change this
+    ...
+```
+
+## Keymaps worth knowing
+
+- Leader key: `<space>`
+- `<leader>pf` — find files
+- `<C-p>` — find git files
+- `<leader>pws` — grep word under cursor
+- `gd` / `K` — go to definition / hover (once LSP attaches)
 
