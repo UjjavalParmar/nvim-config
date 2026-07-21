@@ -38,7 +38,7 @@ autocmd({"BufWritePre"}, {
 autocmd('BufEnter', {
     group = ultronGroup,
     callback = function()
-        pcall(vim.cmd.colorscheme, "gruvbox")
+        pcall(ColorMyPencils, "gruvbox")
     end
 })
 
