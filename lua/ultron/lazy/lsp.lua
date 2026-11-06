@@ -2,8 +2,8 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         "stevearc/conform.nvim",
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        "mason-org/mason.nvim",
+        "mason-org/mason-lspconfig.nvim",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -18,6 +18,11 @@ return {
         require("conform").setup({
             formatters_by_ft = {
                 python = { "ruff_format", "ruff_organize_imports" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                javascriptreact = { "prettier" },
+                typescriptreact = { "prettier" },
+                json = { "prettier" },
             },
             format_on_save = {
                 timeout_ms = 500,
@@ -40,7 +45,9 @@ return {
                 "pyright",
                 "ruff",
                 "ts_ls",
+                "eslint",
                 "html",
+                "jsonls",
                 "terraformls",
             },
             handlers = {
