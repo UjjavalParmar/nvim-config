@@ -1,6 +1,6 @@
 # nvim-config
 
-Personal Neovim config built on [lazy.nvim](https://github.com/folke/lazy.nvim), with LSP (Mason), Treesitter, Telescope, and gruvbox as the default colorscheme.
+Personal Neovim config built on [lazy.nvim](https://github.com/folke/lazy.nvim), with LSP (Mason), Treesitter, Telescope, and gruber-darker as the default colorscheme.
 
 ## Prerequisites
 

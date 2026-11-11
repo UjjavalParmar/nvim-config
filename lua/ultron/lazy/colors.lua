@@ -9,7 +9,7 @@ function ColorMyPencils(color)
 	vim.api.nvim_set_hl(0, "SignColumn", { bg = black })
 	vim.api.nvim_set_hl(0, "LineNr", { bg = black })
 	vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = black })
-	vim.api.nvim_set_hl(0, "VertSplit", { bg = black })
+	vim.api.nvim_set_hl(0, "WinSeparator", { bg = black })
 	vim.api.nvim_set_hl(0, "FoldColumn", { bg = black })
 end
 
@@ -23,9 +23,6 @@ return {
         "folke/tokyonight.nvim",
         lazy = false,
         opts = {},
-        config = function()
-            ColorMyPencils()
-        end
     },
     {
         "ellisonleao/gruvbox.nvim",
@@ -89,10 +86,15 @@ return {
                     italic = false,
                 },
             })
-
-            ColorMyPencils();
         end
     },
 
+    {
+        "blazkowolf/gruber-darker.nvim",
+        lazy = false,
+        config = function()
+            ColorMyPencils("gruber-darker")
+        end,
+    },
 
 }

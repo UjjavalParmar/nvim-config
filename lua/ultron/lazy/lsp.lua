@@ -26,7 +26,7 @@ return {
             },
             format_on_save = {
                 timeout_ms = 500,
-                lsp_fallback = true,
+                lsp_format = "fallback",
             },
         })
         local cmp = require('cmp')
@@ -38,6 +38,56 @@ return {
             cmp_lsp.default_capabilities())
 
         require("fidget").setup({})
+
+        -- Nvim 0.11+: configure servers with vim.lsp.config; mason-lspconfig enables them.
+        vim.lsp.config("*", { capabilities = capabilities })
+
+        vim.lsp.config("pyright", {
+            settings = {
+                python = {
+                    analysis = {
+                        typeCheckingMode = "standard",
+                        autoImportCompletions = true,
+                        autoSearchPaths = true,
+                        useLibraryCodeForTypes = true,
+                        diagnosticMode = "workspace",
+                    },
+                },
+            },
+        })
+
+        vim.lsp.config("ruff", {
+            on_attach = function(client)
+                -- pyright handles hover; ruff handles linting
+                client.server_capabilities.hoverProvider = false
+            end,
+        })
+
+        vim.lsp.config("lua_ls", {
+            settings = {
+                Lua = {
+                    runtime = {
+                        version = "LuaJIT",
+                    },
+                    diagnostics = {
+                        globals = { "vim", "ColorMyPencils", "R" },
+                    },
+                    workspace = {
+                        library = vim.api.nvim_get_runtime_file("", true),
+                        checkThirdParty = false,
+                    },
+                    format = {
+                        enable = true,
+                        -- NOTE: the value should be STRING!!
+                        defaultConfig = {
+                            indent_style = "space",
+                            indent_size = "2",
+                        },
+                    },
+                },
+            },
+        })
+
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
@@ -50,80 +100,6 @@ return {
                 "jsonls",
                 "terraformls",
             },
-            handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
-                        capabilities = capabilities
-                    }
-                end,
-
-                ["pyright"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.pyright.setup({
-                        capabilities = capabilities,
-                        settings = {
-                            python = {
-                                analysis = {
-                                    typeCheckingMode = "standard",
-                                    autoImportCompletions = true,
-                                    autoSearchPaths = true,
-                                    useLibraryCodeForTypes = true,
-                                    diagnosticMode = "workspace",
-                                },
-                            },
-                        },
-                    })
-                end,
-
-                ["ruff"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.ruff.setup({
-                        capabilities = capabilities,
-                        on_attach = function(client)
-                            -- pyright handles hover; ruff handles linting
-                            client.server_capabilities.hoverProvider = false
-                        end,
-                    })
-                end,
-
-                ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-
-                    lspconfig.lua_ls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                runtime = {
-                                    version = 'LuaJIT',
-                                },
-                                diagnostics = {
-                                    globals = { 'vim' },
-                                },
-                                workspace = {
-                                    library = vim.api.nvim_get_runtime_file("", true),
-                                    checkThirdParty = false,
-                                },
-                                format = {
-                                    enable = true,
-                                    -- Put format options here
-                                    -- NOTE: the value should be STRING!!
-                                    defaultConfig = {
-                                        indent_style = "space",
-                                        indent_size = "2",
-                                    }
-                                },
-                            }
-                        }
-                    }
-                end,
-                ["tailwindcss"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.tailwindcss.setup({
-                        capabilities = capabilities,
-                        filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
-                    })
-                end,
-            }
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }

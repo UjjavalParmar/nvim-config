@@ -35,14 +35,6 @@ autocmd({"BufWritePre"}, {
     command = [[%s/\s\+$//e]],
 })
 
-autocmd('BufEnter', {
-    group = ultronGroup,
-    callback = function()
-        pcall(ColorMyPencils, "gruvbox")
-    end
-})
-
-
 autocmd('LspAttach', {
     group = ultronGroup,
     callback = function(e)

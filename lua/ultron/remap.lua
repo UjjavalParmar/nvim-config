@@ -4,7 +4,7 @@ vim.keymap.set("n", "<leader>mm", vim.cmd.Ex)
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.api.nvim_set_keymap("n", "<leader>tf", "<Plug>PlenaryTestFile", { noremap = false, silent = false })
+vim.keymap.set("n", "<leader>tf", "<Plug>PlenaryTestFile", { remap = true, silent = false })
 
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -83,9 +83,9 @@ end)
 
 -- Format code using conform.nvim
 vim.keymap.set("n", "<leader>fm", function()
-    require("conform").format({ async = true, lsp_fallback = true })
+    require("conform").format({ async = true, lsp_format = "fallback" })
 end)
 vim.keymap.set("v", "<leader>fm", function()
-    require("conform").format({ async = true, lsp_fallback = true })
+    require("conform").format({ async = true, lsp_format = "fallback" })
 end)
 
